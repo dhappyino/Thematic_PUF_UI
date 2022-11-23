@@ -1,0 +1,13 @@
+{
+  "jsonrpc": "2.0",
+  "method": "eth_sendTransaction",
+  "params": [
+    {
+      "from": "0x4002f065a9d36dde4ef064018d42d08d26e871a2",
+      "to": "0x59604c05fc938656ff8a5d4e71f95df0c41e58f0",
+      "data": "0x64",
+      "value": "0xF444"
+    }
+  ],
+  "id": 6
+}
