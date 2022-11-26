@@ -77,7 +77,7 @@ namespace WebApplication2
                     Session["TextBox1"] = TextBox1.Text;
                     Session["TextBox2"] = TextBox2.Text;
                     Session["TextBox3"] = DateTime.Now;
-                    Server.Transfer("WebForm2.aspx", true);
+                    //Server.Transfer("WebForm2.aspx", true);
                     break;
                 }
                 else
@@ -104,7 +104,7 @@ namespace WebApplication2
             //        id=1
 
             //    };
-            StreamReader r = new StreamReader("C:\\Users\\乖乖\\Desktop\\WebApplication2\\WebApplication2\\sentTransaction.json");
+            StreamReader r = new StreamReader("C:\\Users\\乖乖\\Desktop\\WebApplication2\\WebApplication2\\json.json");
             string json = r.ReadToEnd();
             //var jsonObj = Json.Decode(r);
             // string postBody = JsonConvert.SerializeObject(postData);//將匿名物件序列化為json字串

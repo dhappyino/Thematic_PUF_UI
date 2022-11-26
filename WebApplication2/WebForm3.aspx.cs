@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Data.SqlClient;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -12,6 +13,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.WebPages;
+using System.Net;
 
 namespace WebApplication2
 {
@@ -21,13 +23,14 @@ namespace WebApplication2
         {
 
         }
-
+        
         protected void Unnamed2_Click(object sender, EventArgs e)
         {
+            
+          
             Random crandom = new Random();
-            int x = crandom.Next(10);
-            SHA256CryptoServiceProvider sha256 = new SHA256CryptoServiceProvider();
-            string key = Sha256(x.ToString());
+            int c0 = crandom.Next(10);
+            string key = Sha256(c0.ToString());
             byte[] f = ConvertHexStringToByteArray(key);
             //string c=Convert.ToString(Convert.ToInt32(key.ToString(), 16), 2);
             StringBuilder Sb = new StringBuilder();
@@ -140,12 +143,137 @@ namespace WebApplication2
                     ropufSb1.Append(alllast[i]);
                 }
             }
-            string ropuf=ropufSb1.ToString()+ropufSb2.ToString();
-            Label1.Text = ropuf.Length.ToString();
+            string k0=ropufSb1.ToString()+ropufSb2.ToString();
+            Label1.Text = k0.Length.ToString();
+
+
+            string newName = TextBox1.Text.ToString();
+            Object newProdID = 0;
+            string sql = "SELECT User_ID FROM dbo.UserInfo WHERE User_ID = @Name;";                                   //查詢是否註冊過
+            using (SqlConnection conn = new SqlConnection("Data Source=(localdb)\\ProjectModels;Initial Catalog=Project_DB;Integrated Security=True"))
+            {
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.Add("@Name", SqlDbType.NVarChar);
+                cmd.Parameters["@Name"].Value = newName;
+                try
+                {
+                    conn.Open();
+                    SqlDataReader Reader = cmd.ExecuteReader();
+                    if (Reader.HasRows)
+                    {
+                        Label1.Text = "已註冊過資料!,請等候3秒鐘喲~~~~~~~~~";//已註冊過
+
+                    }
+                    else
+                    {
+                        conn.Close();
+                        SqlCommand cmd1 = new SqlCommand(sql, conn);
+                        SqlDataAdapter adapter = new SqlDataAdapter();
+                        sql = "INSERT INTO dbo.UserInfo (User_ID, BlockchainID) VALUES ('"+ newName +"', '0x4002f065a9d36dde4ef064018d42d08d26e871a2');";
+                        //+ "INSERT INTO dbo.RC_Table (User_ID, C0, Hex_R0) VALUES (@Name, @c0, @R0);"     //未註冊過，新增資料
+                        //cmd1.Parameters.Add("@Name1", SqlDbType.NVarChar);
+                        //cmd1.Parameters["@Name1"].Value = newName;
+                        try
+                        {
+                            conn.Open();
+                            cmd1 = new SqlCommand(sql, conn);
+                            adapter.InsertCommand = new SqlCommand(sql, conn);
+                            adapter.InsertCommand.ExecuteNonQuery();
+                            cmd1.Dispose();
+                            conn.Close();
+
+                            sql = "INSERT INTO dbo.RC_Table (User_ID, C0 , Hex_R0) VALUES ('"+ newName + "', '"+ c0 + "' ,'"+ Sha256(k0) + "');";
+                            conn.Open();
+                            cmd1 = new SqlCommand(sql, conn);
+                            adapter.InsertCommand = new SqlCommand(sql, conn);
+                            adapter.InsertCommand.ExecuteNonQuery();
+                            cmd1.Dispose();
+                            conn.Close();
+                        }
+                        catch (Exception ex)
+                        {
+                            newProdID = null;
+                            Console.WriteLine(ex.Message);
+                        }
+                        
+                        if (newProdID != null)
+                        {
+                            RC_Post_To_BlockChain(newName, c0, Sha256(k0));
+                        }
+                        else
+                        {
+                            Label1.Text = "新增失敗!";
+                        }
+                    }
+
+
+                    HttpCookie MyCookie = new HttpCookie("UserInfo"); //新增 Cookie 名稱為 UserInfo
+                    MyCookie.Values["id"] = TextBox1.Text; //設定 Cookie 的值
+                    MyCookie.Values["PUFcode"] = TextBox1.Text;
+
+                    Response.Cookies.Add(MyCookie);
+
+
+                    Server.Transfer("WebForm2.aspx", true);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                
+            }
+            string url = "http://203.64.84.240:8545";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            //var postData =
+            //    new //要傳遞的參數Sample
+            //    {
+            //        jsonrpc = "2.0",
+            //        mathood = "personal_listAccounts",
+            //        params = "",
+            //        id=1
+
+            //    };
+            StreamReader r = new StreamReader("C:\\Users\\乖乖\\Desktop\\WebApplication2\\WebApplication2\\json.json");
+            string json = r.ReadToEnd();
+            //var jsonObj = Json.Decode(r);
+            // string postBody = JsonConvert.SerializeObject(postData);//將匿名物件序列化為json字串
+            byte[] byteArray = Encoding.UTF8.GetBytes(json);//要發送的字串轉為byte[]
+
+            using (Stream reqStream = request.GetRequestStream())
+            {
+                reqStream.Write(byteArray, 0, byteArray.Length);
+            }
+
+
+
+            //發出Request
+            string responseStr = "";
+            using (WebResponse response = request.GetResponse())
+            {
+
+                using (StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+                {
+                    responseStr = reader.ReadToEnd();
+                    Label1.Text = responseStr.ToString();
+                }
+
+            }
         }
+
         public static string Sha256(string str)
         {
             byte[] sha256Bytes = Encoding.UTF8.GetBytes(str);
+            SHA256Managed sha256 = new SHA256Managed();
+            byte[] bytes = sha256.ComputeHash(sha256Bytes);
+            return BitConverter.ToString(bytes).Replace("-", "").ToLower();
+        }
+        public static string hashfunction(string str, int id, int hash, string str2)
+        {
+            string allstr = str + id.ToString() + str2 + hash.ToString();
+            byte[] sha256Bytes = Encoding.UTF8.GetBytes(allstr);
             SHA256Managed sha256 = new SHA256Managed();
             byte[] bytes = sha256.ComputeHash(sha256Bytes);
             return BitConverter.ToString(bytes).Replace("-", "").ToLower();
@@ -166,6 +294,21 @@ namespace WebApplication2
             }
 
             return data;
+        }
+
+        public static void RC_Post_To_BlockChain(string UID, int C, string Hex_K)
+        {
+            
+        }
+
+        protected void b2_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        protected void TextBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

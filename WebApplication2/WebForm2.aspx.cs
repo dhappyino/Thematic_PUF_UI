@@ -11,24 +11,35 @@ namespace WebApplication2
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["TextBox1"] == null)
+            if (Request.Cookies["UserInfo"] != null)
             {
-                Response.Write("<Script language='JavaScript'>alert('登入時間過期');</Script>");
-                Server.Transfer("WebForm1.aspx", true);
+                var useerid = Request.Cookies["UserInfo"].Values["id"];
+                var PUFcode = Request.Cookies["UserInfo"].Values["PUFcode"];
+                Label1.Text = useerid;
+                Label2.Text = PUFcode;
+            }
 
-            }
-            else
-            {
-                string id;
-                byte[] tmpSource;
-                byte[] tmpHash;
-                Label1.Text = Session["TextBox1"].ToString();
-                id = Label1.Text;
-                Response.Write("<Script language='JavaScript'>alert('" + id + "');</Script>");
-                //tmpHash = new SHA256CryptoServiceProvider().ComputeHash(id);
-                //Response.Write("<Script language='JavaScript'>alert('" + tmpHash + "');</Script>");
-            }
-            if (!Page.IsPostBack)
+
+
+
+                //if (Session["TextBox1"] == null)
+                //{
+                //    Response.Write("<Script language='JavaScript'>alert('登入時間過期');</Script>");
+                //    Server.Transfer("WebForm1.aspx", true);
+
+                //}
+                //else
+                //{
+                //    string id;
+                //    byte[] tmpSource;
+                //    byte[] tmpHash;
+                //    Label1.Text = Session["TextBox1"].ToString();
+                //    id = Label1.Text;
+                //    Response.Write("<Script language='JavaScript'>alert('" + id + "');</Script>");
+                //    tmpHash = new SHA256CryptoServiceProvider().ComputeHash(id);
+                //    Response.Write("<Script language='JavaScript'>alert('" + tmpHash + "');</Script>");
+                //}
+                if (!Page.IsPostBack)
             {
                 //if (Session["TextBox1"] != null)
                 //{
@@ -51,7 +62,7 @@ namespace WebApplication2
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            Server.Transfer("WebForm1.aspx", true);
+            //Server.Transfer("WebForm1.aspx", true);
         }
     }
 }
