@@ -1,0 +1,24 @@
+﻿胸腔內科標準病歷範本-POMR
+一、【POMR 範本】COPD with acute exacerbation
+2011/01/11 10:30 AM
+S: Breathlessness, chest tightness
+O: T/P/R: 36.5C/132/36, BP:165/88mmHg
+Consciousness: clear, GCS:E4V5M6
+Breath sound: bilateral expiratory wheezing
+Heart sound: tachycardia, no murmur
+Abdomen: active of bowel sound, soft, no tenderness
+Lower leg: mild pitting edema, bilateral
+ABG: PH: 7.35, PO2: 120mmH2O, PCO2: 68mmH2O, HCO3: 18mmol/L, FiO2:50%
+Problem #1: Chronic obstructive pulmonary disease with acute exacerbation.
+A: Dyspnea episode with CO2 retention, consciousness clear but disorientated to
+person, people and place intermitent. Poor responsive treatment to O2 supply with V-mask,
+bronchodilator and steroid using. Impending respiratory failure was noted.
+P: Diagnostic plan:
+*Follow up CXR, BNP, cardiac enzyme and echo, ammonia, electrolytes, blood sugar.
+Therapeutic plan:
+*Intubation if patient and family agree
+*On BiPAP if patient and family disagree with intubation immediately.
+*Adjust dosage of bronchodilator and steroid.
+Educational plan:
+*Inform critical condition and explain to patient and family about intubation was needed.
+*Compare the advantage and disadvantage between the decision of on BiPAP and intubation.

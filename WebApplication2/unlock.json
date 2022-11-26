@@ -1,9 +1,0 @@
-{
-  "jsonrpc": "2.0",
-  "method": "personal_unlockAccount",
-  "params": [
-    "0x4002f065a9d36dde4ef064018d42d08d26e871a2",
-    "5uper53cr3t"
-  ],
-  "id": 6
-}
