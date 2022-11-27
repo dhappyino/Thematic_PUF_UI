@@ -162,8 +162,8 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="test\Server_Test.aspx" />
     <Content Include="WebForm1.aspx" />
-    <Content Include="WebForm2.aspx" />
     <Content Include="JSON_Data\json.json" />
+    <Content Include="WebForm2.aspx" />
     <Content Include="WebForm3.aspx" />
     <Content Include="JSON_Data\getbyhash.json" />
     <Content Include="JSON_Data\getbalance.json" />
