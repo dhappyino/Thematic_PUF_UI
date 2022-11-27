@@ -205,8 +205,6 @@ namespace WebApplication2
                             Label1.Text = "新增失敗!";
                         }
                     }
-
-
                     HttpCookie MyCookie = new HttpCookie("UserInfo"); //新增 Cookie 名稱為 UserInfo
                     MyCookie.Values["id"] = TextBox1.Text; //設定 Cookie 的值
                     MyCookie.Values["PUFcode"] = TextBox1.Text;
@@ -227,27 +225,15 @@ namespace WebApplication2
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "POST";
             request.ContentType = "application/json";
-            //var postData =
-            //    new //要傳遞的參數Sample
-            //    {
-            //        jsonrpc = "2.0",
-            //        mathood = "personal_listAccounts",
-            //        params = "",
-            //        id=1
-
-            //    };
-            StreamReader r = new StreamReader("C:\\Users\\乖乖\\Desktop\\WebApplication2\\WebApplication2\\json.json");
+            StreamReader r = new StreamReader("C:\\Users\\乖乖\\Desktop\\Thematic_PUF_UI.git\\WebApplication2\\JSON_Data\\unlock.json");
             string json = r.ReadToEnd();
-            //var jsonObj = Json.Decode(r);
-            // string postBody = JsonConvert.SerializeObject(postData);//將匿名物件序列化為json字串
+
             byte[] byteArray = Encoding.UTF8.GetBytes(json);//要發送的字串轉為byte[]
 
             using (Stream reqStream = request.GetRequestStream())
             {
                 reqStream.Write(byteArray, 0, byteArray.Length);
             }
-
-
 
             //發出Request
             string responseStr = "";
@@ -261,19 +247,38 @@ namespace WebApplication2
                 }
 
             }
+
+
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            r = new StreamReader("C:\\Users\\乖乖\\Desktop\\Thematic_PUF_UI.git\\WebApplication2\\JSON_Data\\sentTransaction.json");
+            json = r.ReadToEnd();
+
+            byteArray = Encoding.UTF8.GetBytes(json);//要發送的字串轉為byte[]
+
+            using (Stream reqStream = request.GetRequestStream())
+            {
+                reqStream.Write(byteArray, 0, byteArray.Length);
+            }
+
+            //發出Request
+            responseStr = "";
+            using (WebResponse response = request.GetResponse())
+            {
+
+                using (StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+                {
+                    responseStr = reader.ReadToEnd();
+                    Label1.Text = responseStr.ToString();
+                }
+
+            }
+
         }
 
         public static string Sha256(string str)
         {
             byte[] sha256Bytes = Encoding.UTF8.GetBytes(str);
-            SHA256Managed sha256 = new SHA256Managed();
-            byte[] bytes = sha256.ComputeHash(sha256Bytes);
-            return BitConverter.ToString(bytes).Replace("-", "").ToLower();
-        }
-        public static string hashfunction(string str, int id, int hash, string str2)
-        {
-            string allstr = str + id.ToString() + str2 + hash.ToString();
-            byte[] sha256Bytes = Encoding.UTF8.GetBytes(allstr);
             SHA256Managed sha256 = new SHA256Managed();
             byte[] bytes = sha256.ComputeHash(sha256Bytes);
             return BitConverter.ToString(bytes).Replace("-", "").ToLower();
@@ -301,14 +306,28 @@ namespace WebApplication2
             
         }
 
-        protected void b2_Click(object sender, EventArgs e)
+        private string StringToHexString(string s, Encoding encode)
         {
-            
+            byte[] b = encode.GetBytes(s);//按照指定編碼將string編程字節數組
+            string result = string.Empty;
+            for (int i = 0; i < b.Length; i++)//逐字節變為16進制字符
+            {
+                result += Convert.ToString(b[i], 16);
+            }
+            return result;
         }
 
-        protected void TextBox1_TextChanged(object sender, EventArgs e)
+        private string HexStringToString(string hs, Encoding encode)
         {
-
+            string strTemp = "";
+            byte[] b = new byte[hs.Length / 2];
+            for (int i = 0; i < hs.Length / 2; i++)
+            {
+                strTemp = hs.Substring(i * 2, 2);
+                b[i] = Convert.ToByte(strTemp, 16);
+            }
+            //按照指定編碼將字節數組變為字符串
+            return encode.GetString(b);
         }
     }
 }

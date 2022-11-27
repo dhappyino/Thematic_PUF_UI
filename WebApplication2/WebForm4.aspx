@@ -8,9 +8,15 @@
     <title></title>
 </head>
 <body>
-    <asp:Label runat="server" Text="Label" ID="A"></asp:Label>
     <form id="form1" runat="server">
         <div>
+            <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+            <br />
+            <asp:Label runat="server" Text="Label" ID="Label1"></asp:Label>
+            <br />
+            <asp:Label ID="Label2" runat="server" Text="Label"></asp:Label>
+            <br />
+            <asp:Button runat="server" Text="Button" OnClick="Unnamed2_Click"></asp:Button>
         </div>
     </form>
 </body>

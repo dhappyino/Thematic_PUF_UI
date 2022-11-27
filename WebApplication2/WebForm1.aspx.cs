@@ -104,7 +104,7 @@ namespace WebApplication2
             //        id=1
 
             //    };
-            StreamReader r = new StreamReader("C:\\Users\\乖乖\\Desktop\\WebApplication2\\WebApplication2\\json.json");
+            StreamReader r = new StreamReader("C:\\Users\\乖乖\\Desktop\\Thematic_PUF_UI.git\\WebApplication2\\JSON_Data\\unlock.json");
             string json = r.ReadToEnd();
             //var jsonObj = Json.Decode(r);
             // string postBody = JsonConvert.SerializeObject(postData);//將匿名物件序列化為json字串
