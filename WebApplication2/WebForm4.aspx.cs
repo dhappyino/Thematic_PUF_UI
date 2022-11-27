@@ -56,5 +56,19 @@ namespace WebApplication2
             //按照指定編碼將字節數組變為字符串
             return encode.GetString(b);
         }
+
+        protected void Unnamed3_Click1(object sender, EventArgs e)
+        {
+
+            StreamReader r = new StreamReader("C:\\Users\\乖乖\\Desktop\\Thematic_PUF_UI.git\\WebApplication2\\JSON_Data\\sentTransaction.json");
+            string str = r.ReadToEnd();
+            JObject json = JObject.Parse(str);
+            foreach (var f in json)
+            {
+                Console.WriteLine(f);
+            }
+            Response.Write(json["params"][0]["from"]);
+            
+        }
     }
 }

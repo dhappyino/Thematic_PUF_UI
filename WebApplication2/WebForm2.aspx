@@ -12,15 +12,23 @@
     <form id="form1" runat="server">
         <div>
            簽章上傳:<br />
-           ID:<asp:Label ID="Label1" runat="server" Text="Label"></asp:Label> <br />
-             PUFcode:<asp:Label ID="Label2" runat="server" Text="Label"></asp:Label>
-            <br /><asp:Label runat="server" Text="Label"></asp:Label>
+           ID: <br />
+            <asp:GridView runat="server" OnSelectedIndexChanged="Unnamed2_SelectedIndexChanged"></asp:GridView>
+            <asp:FileUpload runat="server"></asp:FileUpload>
+            <br/>
+             <asp:Button ID="Button1" runat="server" Text="Button" OnClick="Button1_Click" />
+              <br/>
+            
+            <br /><br />
+             <br />
+             <asp:Label ID="Label4" runat="server" Text="hash data"></asp:Label><br />
+            <asp:Label ID="Label3" runat="server" Text="hash data"></asp:Label>
             <br />
             <br />
            
             
 
-            <asp:Button ID="Button1" runat="server" Text="Button" OnClick="Button1_Click" />
+           
 
         </div>
     </form>
